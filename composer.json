@@ -17,9 +17,11 @@
     ],
     "require": {
         "php": "^7.4",
+        "league/period": "^4.10",
         "nesbot/carbon": "^2.36"
     },
     "require-dev": {
+        "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.2"
     },
     "autoload": {
