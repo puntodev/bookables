@@ -1,0 +1,42 @@
+{
+    "name": "puntodev/bookables",
+    "description": "Bookable Library",
+    "keywords": [
+        "puntodev",
+        "bookables"
+    ],
+    "homepage": "https://github.com/puntodev/bookables",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mariano Goldman",
+            "email": "mariano.goldman@puntodev.com.ar",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Puntodev\\Bookables\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Puntodev\\Bookables\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
