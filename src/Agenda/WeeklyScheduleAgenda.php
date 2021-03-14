@@ -12,14 +12,8 @@ use Puntodev\Bookables\WeeklySchedule;
 
 class WeeklyScheduleAgenda implements Agenda
 {
-    /** @var WeeklySchedule */
     private WeeklySchedule $weeklySchedule;
 
-    /**
-     * WeeklyScheduleAgenda constructor.
-     *
-     * @param WeeklySchedule $weeklySchedule
-     */
     public function __construct(WeeklySchedule $weeklySchedule)
     {
         $this->weeklySchedule = $weeklySchedule;
