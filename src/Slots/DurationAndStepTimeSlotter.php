@@ -13,18 +13,16 @@ use Puntodev\Bookables\Contracts\TimeSlotter;
 
 class DurationAndStepTimeSlotter implements TimeSlotter
 {
-    /** @var int */
     private int $duration;
 
-    /** @var int */
     private int $step;
 
     /**
      * TimeSlotter constructor.
-     * @param $duration
-     * @param $step
+     * @param int $duration Slot duration (in minutes)
+     * @param int $step Frequency of slot starts (in minutes)
      */
-    public function __construct($duration, $step)
+    public function __construct(int $duration, int $step)
     {
         $this->duration = $duration;
         $this->step = $step;

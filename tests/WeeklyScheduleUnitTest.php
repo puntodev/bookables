@@ -151,13 +151,46 @@ class WeeklyScheduleUnitTest extends TestCase
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
-        $this->assertArrayHasKey('Sun', $weeklySchedule->daily);
+        $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
         $forSunday = $weeklySchedule->forDay('Sun');
         $this->assertArrayHasKey('start', $forSunday[0]);
         $this->assertArrayHasKey('end', $forSunday[0]);
         $this->assertEquals('14:00', $forSunday[0]['start']);
         $this->assertEquals('15:00', $forSunday[0]['end']);
-        $this->assertEquals(24, $weeklySchedule->getHoursInAdvance());
+        $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testForDay()
+    {
+        $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
+
+        $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
+        $forSunday = $weeklySchedule->forDay('Sun');
+        $this->assertArrayHasKey('start', $forSunday[0]);
+        $this->assertArrayHasKey('end', $forSunday[0]);
+        $this->assertEquals('14:00', $forSunday[0]['start']);
+        $this->assertEquals('15:00', $forSunday[0]['end']);
+        $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
+        $this->assertFalse($weeklySchedule->disableAll());
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testForDayWhenDisableAll()
+    {
+        $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": true}');
+
+        $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
+        $forSunday = $weeklySchedule->forDay('Sun');
+        $this->assertCount(0, $forSunday);
+        $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
+        $this->assertTrue($weeklySchedule->disableAll());
     }
 
     /**
@@ -168,13 +201,28 @@ class WeeklyScheduleUnitTest extends TestCase
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
-        $this->assertArrayHasKey('Sun', $weeklySchedule->daily);
+        $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
         $forSunday = $weeklySchedule->forDate(Carbon::parse('2020-06-14'));
         $this->assertArrayHasKey('start', $forSunday[0]);
         $this->assertArrayHasKey('end', $forSunday[0]);
         $this->assertEquals('14:00', $forSunday[0]['start']);
         $this->assertEquals('15:00', $forSunday[0]['end']);
-        $this->assertEquals(24, $weeklySchedule->getHoursInAdvance());
+        $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testForDateDisableAll()
+    {
+        $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": true}');
+
+        $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
+        $forSunday = $weeklySchedule->forDate(Carbon::parse('2020-06-14'));
+        $this->assertCount(0, $forSunday);
+        $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
+        $this->assertTrue($weeklySchedule->disableAll());
     }
 
     /**
@@ -183,7 +231,7 @@ class WeeklyScheduleUnitTest extends TestCase
      */
     public function testDefaultWorkingHoursParsesAsValid()
     {
-        WeeklySchedule::fromArray(WeeklySchedule::default_working_hours());
+        WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours());
         $this->assertTrue(true);
     }
 

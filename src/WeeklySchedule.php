@@ -28,33 +28,41 @@ class WeeklySchedule
         'Sat' => 6,
     ];
 
-    /** @var array */
-    public array $daily;
+    private array $daily;
 
-    /** @var int */
-    public int $hours_in_advance;
+    private int $hoursInAdvance;
+
+    private bool $disableAll;
 
     /**
      * WeeklySchedule constructor.
+     *
      * @param array $daily
-     * @param int $hours_in_advance
+     * @param int $hoursInAdvance
+     * @param bool $disableAll
      */
-    private function __construct(array $daily = array(
-        'Sun' => [],
-        'Mon' => [],
-        'Tue' => [],
-        'Wed' => [],
-        'Thu' => [],
-        'Fri' => [],
-        'Sat' => []
-    ), int $hours_in_advance = 24)
+    private function __construct(
+        array $daily = [
+            'Sun' => [],
+            'Mon' => [],
+            'Tue' => [],
+            'Wed' => [],
+            'Thu' => [],
+            'Fri' => [],
+            'Sat' => []
+        ],
+        int $hoursInAdvance = 24,
+        bool $disableAll = false
+    )
     {
         $this->daily = $daily;
-        $this->hours_in_advance = $hours_in_advance;
+        $this->hoursInAdvance = $hoursInAdvance;
+        $this->disableAll = $disableAll;
     }
 
     /**
      * @param array $array
+     *
      * @throws Exception
      */
     private static function validate(array $array): void
@@ -62,9 +70,9 @@ class WeeklySchedule
         if (!array_key_exists('hours_in_advance', $array)) {
             throw new Exception("Missing hours in advance in schedule: ");
         }
-        $hours_in_advance = $array['hours_in_advance'];
-        if (!is_int($hours_in_advance)) {
-            throw new Exception("Invalid hours in advance in schedule: " . $hours_in_advance);
+        $hoursInAdvance = $array['hours_in_advance'];
+        if (!is_int($hoursInAdvance)) {
+            throw new Exception("Invalid hours in advance in schedule: " . $hoursInAdvance);
         }
 
         if (!array_key_exists('daily', $array)) {
@@ -107,55 +115,74 @@ class WeeklySchedule
         }
     }
 
-    public function forDate(Carbon $date)
+    public function forDate(Carbon $date): array
     {
+        if ($this->disableAll) {
+            return [];
+        }
+
         // TODO acá hay un bug, ya que podemos estar eligiendo mal el día si difieren la zona horaria del staff y del customer
         // No es grave porque acá solo lo usamos en una zona horaria, y si hubiera más de una no habrían grandes diferencias
         return $this->forDay(self::$dowMap[$date->dayOfWeek]);
     }
 
-    public function forDay(string $day)
+    public function forDay(string $day): array
     {
+        if ($this->disableAll) {
+            return [];
+        }
+
         return $this->daily[$day];
     }
 
-    /**
-     * @return int
-     */
-    public function getHoursInAdvance(): int
+    public function daily(): array
     {
-        return $this->hours_in_advance;
+        return $this->daily;
+    }
+
+    public function hoursInAdvance(): int
+    {
+        return $this->hoursInAdvance;
+    }
+
+    public function disableAll(): bool
+    {
+        return $this->disableAll;
     }
 
     /**
      * @param string $json
+     *
      * @return WeeklySchedule
      * @throws Exception if Json doesn't represent a valid schedule
      */
-    public static function fromJson(string $json)
+    public static function fromJson(string $json): WeeklySchedule
     {
         $json_decoded = json_decode($json, true);
         self::validate($json_decoded);
+
         return self::fromArray($json_decoded);
     }
 
     /**
      * @param array $array
+     *
      * @return WeeklySchedule
      * @throws Exception if Json doesn't represent a valid schedule
      */
-    public static function fromArray(array $array)
+    public static function fromArray(array $array): WeeklySchedule
     {
         self::validate($array);
-        uksort($array['daily'], function ($a, $b) {
-            return self::$dowOrder[$a] - self::$dowOrder[$b];
-        });
-        return new self($array['daily'], $array['hours_in_advance']);
+
+        uksort($array['daily'], fn ($a, $b) => self::$dowOrder[$a] - self::$dowOrder[$b]);
+
+        return new self($array['daily'], $array['hours_in_advance'], $array['disable_all'] ?? false);
     }
 
-    public static function default_working_hours()
+    public static function defaultWorkingHours(): array
     {
         return [
+            'disable_all' => false,
             'hours_in_advance' => 24,
             'daily' => [
                 'Sun' => [
