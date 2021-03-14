@@ -18,7 +18,8 @@
     "require": {
         "php": "^7.4|^8.0",
         "league/period": "^4.10",
-        "nesbot/carbon": "^2.36"
+        "nesbot/carbon": "^2.36",
+        "ext-json": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
