@@ -16,10 +16,11 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
+        "ext-json": "*",
         "league/period": "^4.10",
         "nesbot/carbon": "^2.36",
-        "ext-json": "*"
+        "nunomaduro/collision": "^5.4"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
