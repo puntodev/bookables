@@ -210,6 +210,30 @@ class WeeklyScheduleUnitTest extends TestCase
         $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
     }
 
+    public function test_to_array()
+    {
+        $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": false}');
+
+        $this->assertEquals([
+            'daily' => [
+                'Sun' => [[
+                    'start' => '14:00',
+                    'end' => '15:00',
+                ]],
+            ],
+            'hours_in_advance' => 24,
+            'disable_all' => false,
+        ], $weeklySchedule->toArray());
+    }
+
+    public function test_to_json()
+    {
+        $expected = '{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": false}';
+        $weeklySchedule = WeeklySchedule::fromJson($expected);
+
+        $this->assertJsonStringEqualsJsonString($expected, $weeklySchedule->toJson());
+    }
+
     /**
      * @return void
      * @throws Exception

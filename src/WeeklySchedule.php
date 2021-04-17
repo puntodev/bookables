@@ -179,6 +179,20 @@ class WeeklySchedule
         return new self($array['daily'], $array['hours_in_advance'], $array['disable_all'] ?? false);
     }
 
+    public function toJson(): string
+    {
+        return json_encode($this->toArray());
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'daily' => $this->daily(),
+            'hours_in_advance' => $this->hoursInAdvance(),
+            'disable_all' => $this->disableAll(),
+        ];
+    }
+
     public static function defaultWorkingHours(): array
     {
         return [
