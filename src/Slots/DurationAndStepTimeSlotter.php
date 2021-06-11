@@ -13,19 +13,14 @@ use Puntodev\Bookables\Contracts\TimeSlotter;
 
 class DurationAndStepTimeSlotter implements TimeSlotter
 {
-    private int $duration;
-
-    private int $step;
-
     /**
      * TimeSlotter constructor.
      * @param int $duration Slot duration (in minutes)
      * @param int $step Frequency of slot starts (in minutes)
+     * @param bool $alignToStepping Whether to align to minutes multiple of stepping or not
      */
-    public function __construct(int $duration, int $step)
+    public function __construct(private int $duration, private int $step, private bool $alignToStepping = true)
     {
-        $this->duration = $duration;
-        $this->step = $step;
     }
 
     /**
@@ -39,9 +34,9 @@ class DurationAndStepTimeSlotter implements TimeSlotter
         /** @var Period $range */
         foreach ($ranges as $range) {
 
-            // Find the start of the first slot, aligned based on the stepping
+            // Find the start of the first slot, aligned (or not) based on the stepping
             $rangeStart = Carbon::instance($range->getStartDate())->startOfMinute();
-            while ($rangeStart->minute % $this->step !== 0)
+            while ($this->alignToStepping && $rangeStart->minute % $this->step !== 0)
                 $rangeStart->addMinute();
 
             // Now create the slots by iteration over the period
