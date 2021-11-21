@@ -3,13 +3,14 @@
 namespace Tests\Slots;
 
 use Carbon\Carbon;
-use DateTimeInterface;
 use League\Period\Period;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Slots\DurationAndStepTimeSlotter;
+use Tests\Concerns\WithRangeAssertions;
 
 class DurationAndStepTimeSlotterTest extends TestCase
 {
+    use WithRangeAssertions;
 
     /** @test */
     public function check_stepping_15_align()
@@ -67,12 +68,4 @@ class DurationAndStepTimeSlotterTest extends TestCase
         ];
         return $possibleRanges;
     }
-
-    private function assertRange(array $expected, Period $actual)
-    {
-        $this->assertEquals($expected[0], $actual->getStartDate()->format(DateTimeInterface::ISO8601));
-        $this->assertEquals($expected[1], $actual->getEndDate()->format(DateTimeInterface::ISO8601));
-
-    }
-
 }
