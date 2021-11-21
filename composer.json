@@ -18,13 +18,13 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "league/period": "^4.10",
-        "nesbot/carbon": "^2.36",
-        "nunomaduro/collision": "^5.4"
+        "league/period": "^4.11",
+        "nesbot/carbon": "^2.54",
+        "nunomaduro/collision": "^5.10"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.2"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
