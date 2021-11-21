@@ -3,7 +3,7 @@
 namespace Tests\Slots;
 
 use Carbon\Carbon;
-use DateTimeImmutable;
+use DateTimeInterface;
 use League\Period\Period;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Slots\DurationAndStepTimeSlotter;
@@ -70,8 +70,8 @@ class DurationAndStepTimeSlotterTest extends TestCase
 
     private function assertRange(array $expected, Period $actual)
     {
-        $this->assertEquals($expected[0], $actual->getStartDate()->format(DateTimeImmutable::ISO8601));
-        $this->assertEquals($expected[1], $actual->getEndDate()->format(DateTimeImmutable::ISO8601));
+        $this->assertEquals($expected[0], $actual->getStartDate()->format(DateTimeInterface::ISO8601));
+        $this->assertEquals($expected[1], $actual->getEndDate()->format(DateTimeInterface::ISO8601));
 
     }
 
