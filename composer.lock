@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fdc0786d225f386d67fa967505bde40",
+    "content-hash": "6bbf417e83044fb9483253f91b1e1b7b",
     "packages": [
         {
             "name": "facade/ignition-contracts",
