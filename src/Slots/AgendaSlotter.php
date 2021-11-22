@@ -28,9 +28,10 @@ class AgendaSlotter implements TimeSlotter
         $ranges = $this->agenda->possibleRanges($startDate, $endDate);
 
         $ret = [];
-        /** @var Period $range */
+
         $interval = $this->duration + max($this->timeAfter, $this->timeBefore);
 
+        /** @var Period $range */
         foreach ($ranges as $range) {
             $dateRange = new CarbonPeriod(
                 Carbon::instance($range->getStartDate()),
@@ -39,15 +40,10 @@ class AgendaSlotter implements TimeSlotter
             );
 
             foreach ($dateRange as $slot) {
-                $period = Period::after($slot, ($this->duration) . 'minutes');
-                foreach ($ranges as $range) {
-                    if ($range->contains($period)) {
-                        $ret[] = $period;
-                        break;
-                    }
-                }
+                $ret[] = Period::after($slot, ($this->duration) . 'minutes');
             }
         }
+
         return $ret;
     }
 }
