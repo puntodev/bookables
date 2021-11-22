@@ -41,10 +41,10 @@ class DaySlotter implements TimeSlotter
             );
 
             foreach ($dateRange as $slot) {
-                $period = Period::after($slot, ($this->duration) . 'minutes');
-                $ret[] = $period;
+                $ret[] = Period::after($slot, ($this->duration) . 'minutes');
             }
         }
+
         return $ret;
     }
 }
