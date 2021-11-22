@@ -5,19 +5,21 @@ namespace Puntodev\Bookables\Slots;
 
 
 use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
+use Carbon\CarbonInterval;
+use Carbon\CarbonPeriod;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 use Puntodev\Bookables\Contracts\TimeSlotter;
 
 /**
  * TimeSlotter that uses an $agenda to obtain the date ranges for the required dates
- * and creates slots for those ranges using a particular $duration and $step
+ * and creates slots for those ranges using a particular $duration.
+ * If $timeBefore is specified it ensures that before each appointment there's at least $timeBefore minutes.
+ * If $timeAfter is specified it ensures that after each appointment there's at least $timeAfter minutes.
  */
 class AgendaSlotter implements TimeSlotter
 {
-    public function __construct(private Agenda $agenda, private int $duration, private int $step)
+    public function __construct(private Agenda $agenda, private int $duration, private int $timeAfter = 0, private int $timeBefore = 0)
     {
     }
 
@@ -25,27 +27,23 @@ class AgendaSlotter implements TimeSlotter
     {
         $ranges = $this->agenda->possibleRanges($startDate, $endDate);
 
-        $uniqueDates = array_values(array_unique(array_map(fn(Period $period) => $period->getStartDate()->getDay(), $ranges)));
-
         $ret = [];
+
+        $interval = $this->duration + max($this->timeAfter, $this->timeBefore);
+
         /** @var Period $range */
-        foreach ($uniqueDates as $range) {
-            $dateRange = new DatePeriod(
+        foreach ($ranges as $range) {
+            $dateRange = new CarbonPeriod(
                 Carbon::instance($range->getStartDate()),
-                new DateInterval("PT{$this->step}M"),
+                new CarbonInterval("PT{$interval}M"),
                 Carbon::instance($range->getEndDate())->subMinutes($this->duration),
             );
 
             foreach ($dateRange as $slot) {
-                $period = Period::after($slot, ($this->duration) . 'minutes');
-                foreach ($ranges as $range) {
-                    if ($range->contains($period)) {
-                        $ret[] = $period;
-                        break;
-                    }
-                }
+                $ret[] = Period::after($slot, ($this->duration) . 'minutes');
             }
         }
+
         return $ret;
     }
 }

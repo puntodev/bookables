@@ -38,9 +38,10 @@ class WeeklyScheduleAgenda implements Agenda
 
         $ret = [];
         foreach ($period as $date) {
-            foreach ($this->weeklySchedule->forDate($date) as $range) {
-                $periodStart = $startOfDateFrom->max(Carbon::instance($date)->setTimeFromTimeString($range['start']));
-                $periodEnd = $endOfDateTo->min(Carbon::instance($date)->setTimeFromTimeString($range['end']));
+            $carbon = Carbon::instance($date);
+            foreach ($this->weeklySchedule->forDate($carbon) as $range) {
+                $periodStart = $startOfDateFrom->max($carbon->clone()->setTimeFromTimeString($range['start']));
+                $periodEnd = $endOfDateTo->min($carbon->clone()->setTimeFromTimeString($range['end']));
                 if ($periodEnd->isAfter($periodStart)) {
                     $ret[] = new Period($periodStart, $periodEnd);
                 }
