@@ -5,19 +5,19 @@ namespace Puntodev\Bookables\Slots;
 
 
 use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
+use Carbon\CarbonInterval;
+use Carbon\CarbonPeriod;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 use Puntodev\Bookables\Contracts\TimeSlotter;
 
 /**
  * TimeSlotter that uses an $agenda to obtain the date ranges for the required dates
- * and creates slots for those ranges using a particular $duration and $step
+ * and creates slots for those ranges using a particular $duration
  */
 class AgendaSlotter implements TimeSlotter
 {
-    public function __construct(private Agenda $agenda, private int $duration, private int $step)
+    public function __construct(private Agenda $agenda, private int $duration)
     {
     }
 
@@ -25,14 +25,12 @@ class AgendaSlotter implements TimeSlotter
     {
         $ranges = $this->agenda->possibleRanges($startDate, $endDate);
 
-        $uniqueDates = array_values(array_unique(array_map(fn(Period $period) => $period->getStartDate()->getDay(), $ranges)));
-
         $ret = [];
         /** @var Period $range */
-        foreach ($uniqueDates as $range) {
-            $dateRange = new DatePeriod(
+        foreach ($ranges as $range) {
+            $dateRange = new CarbonPeriod(
                 Carbon::instance($range->getStartDate()),
-                new DateInterval("PT{$this->step}M"),
+                new CarbonInterval("PT{$this->duration}M"),
                 Carbon::instance($range->getEndDate())->subMinutes($this->duration),
             );
 
