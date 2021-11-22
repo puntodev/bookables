@@ -15,9 +15,8 @@ trait WithRangeAssertions
         }
     }
 
-    private function assertRange(array $expected, Period $actual)
+    private function assertRange(string $expected, Period $actual)
     {
-        $this->assertEquals($expected[0], $actual->getStartDate()->format(DateTimeInterface::ISO8601));
-        $this->assertEquals($expected[1], $actual->getEndDate()->format(DateTimeInterface::ISO8601));
+        $this->assertEquals($expected, $actual->toIso8601());
     }
 }
