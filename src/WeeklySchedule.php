@@ -117,12 +117,6 @@ class WeeklySchedule
 
     public function forDate(Carbon $date): array
     {
-        if ($this->disableAll) {
-            return [];
-        }
-
-        // TODO acá hay un bug, ya que podemos estar eligiendo mal el día si difieren la zona horaria del staff y del customer
-        // No es grave porque acá solo lo usamos en una zona horaria, y si hubiera más de una no habrían grandes diferencias
         return $this->forDay(self::$dowMap[$date->dayOfWeek]);
     }
 
