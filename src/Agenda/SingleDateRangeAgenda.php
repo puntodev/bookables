@@ -11,10 +11,8 @@ use Puntodev\Bookables\Contracts\Agenda;
 
 class SingleDateRangeAgenda implements Agenda
 {
-    /** @var Carbon */
     private Carbon $start;
 
-    /** @var Carbon */
     private Carbon $end;
 
     /**

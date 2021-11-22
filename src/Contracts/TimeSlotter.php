@@ -2,14 +2,15 @@
 
 namespace Puntodev\Bookables\Contracts;
 
-use Exception;
+use Carbon\Carbon;
 
 interface TimeSlotter
 {
     /**
-     * @param array $ranges
+     * Creates time slots for dates in the range between $startDate and $endDate
+     * @param Carbon $startDate
+     * @param Carbon $endDate
      * @return array
-     * @throws Exception
      */
-    public function makeSlots(array $ranges): array;
+    public function makeSlotsForDates(Carbon $startDate, Carbon $endDate): array;
 }
