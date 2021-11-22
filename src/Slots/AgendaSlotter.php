@@ -13,7 +13,9 @@ use Puntodev\Bookables\Contracts\TimeSlotter;
 
 /**
  * TimeSlotter that uses an $agenda to obtain the date ranges for the required dates
- * and creates slots for those ranges using a particular $duration
+ * and creates slots for those ranges using a particular $duration.
+ * If $timeBefore is specified it ensures that before each appointment there's at least $timeBefore minutes.
+ * If $timeAfter is specified it ensures that after each appointment there's at least $timeAfter minutes.
  */
 class AgendaSlotter implements TimeSlotter
 {
@@ -27,7 +29,7 @@ class AgendaSlotter implements TimeSlotter
 
         $ret = [];
         /** @var Period $range */
-        $interval = $this->duration + $this->timeAfter;
+        $interval = $this->duration + max($this->timeAfter, $this->timeBefore);
 
         foreach ($ranges as $range) {
             $dateRange = new CarbonPeriod(
