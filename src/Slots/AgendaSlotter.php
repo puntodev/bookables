@@ -17,7 +17,7 @@ use Puntodev\Bookables\Contracts\TimeSlotter;
  */
 class AgendaSlotter implements TimeSlotter
 {
-    public function __construct(private Agenda $agenda, private int $duration)
+    public function __construct(private Agenda $agenda, private int $duration, private int $timeAfter = 0, private int $timeBefore = 0)
     {
     }
 
@@ -27,10 +27,12 @@ class AgendaSlotter implements TimeSlotter
 
         $ret = [];
         /** @var Period $range */
+        $interval = $this->duration + $this->timeAfter;
+
         foreach ($ranges as $range) {
             $dateRange = new CarbonPeriod(
                 Carbon::instance($range->getStartDate()),
-                new CarbonInterval("PT{$this->duration}M"),
+                new CarbonInterval("PT{$interval}M"),
                 Carbon::instance($range->getEndDate())->subMinutes($this->duration),
             );
 
