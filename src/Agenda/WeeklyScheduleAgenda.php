@@ -27,12 +27,20 @@ class WeeklyScheduleAgenda implements Agenda
      */
     public function possibleRanges(Carbon $from, Carbon $to): array
     {
-        $period = new DatePeriod($from, new DateInterval('P1D'), $to);
+        $startOfDateFrom = $from->clone()->startOfDay();
+        $endOfDateTo = $to->clone()->endOfDay();
+
+        $period = new DatePeriod(
+            $startOfDateFrom,
+            new DateInterval('P1D'),
+            $endOfDateTo,
+        );
+
         $ret = [];
         foreach ($period as $date) {
             foreach ($this->weeklySchedule->forDate($date) as $range) {
-                $periodStart = $from->max(Carbon::instance($date)->setTimeFromTimeString($range['start']));
-                $periodEnd = $to->min(Carbon::instance($date)->setTimeFromTimeString($range['end']));
+                $periodStart = $startOfDateFrom->max(Carbon::instance($date)->setTimeFromTimeString($range['start']));
+                $periodEnd = $endOfDateTo->min(Carbon::instance($date)->setTimeFromTimeString($range['end']));
                 if ($periodEnd->isAfter($periodStart)) {
                     $ret[] = new Period($periodStart, $periodEnd);
                 }
