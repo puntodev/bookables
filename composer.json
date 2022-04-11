@@ -23,7 +23,8 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "nunomaduro/collision": "^6.1"
     },
     "autoload": {
         "psr-4": {
