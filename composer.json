@@ -19,8 +19,7 @@
         "php": "^8.0",
         "ext-json": "*",
         "league/period": "^4.11",
-        "nesbot/carbon": "^2.54",
-        "nunomaduro/collision": "^5.10"
+        "nesbot/carbon": "^2.54"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
