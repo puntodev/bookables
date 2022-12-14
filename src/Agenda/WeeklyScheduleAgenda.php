@@ -43,7 +43,7 @@ class WeeklyScheduleAgenda implements Agenda
                 $periodStart = $startOfDateFrom->max($carbon->clone()->setTimeFromTimeString($range['start']));
                 $periodEnd = $endOfDateTo->min($carbon->clone()->setTimeFromTimeString($range['end']));
                 if ($periodEnd->isAfter($periodStart)) {
-                    $ret[] = new Period($periodStart, $periodEnd);
+                    $ret[] = Period::fromDate($periodStart, $periodEnd);
                 }
             }
         }
