@@ -5,7 +5,7 @@ namespace Puntodev\Bookables\Agenda;
 use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
-use League\Period\Exception;
+use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 use Puntodev\Bookables\WeeklySchedule;

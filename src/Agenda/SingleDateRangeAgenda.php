@@ -5,7 +5,7 @@ namespace Puntodev\Bookables\Agenda;
 
 
 use Carbon\Carbon;
-use League\Period\Exception;
+use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 
@@ -41,7 +41,7 @@ class SingleDateRangeAgenda implements Agenda
             return [];
         }
         return [
-            new Period($maxStart, $minEnd)
+            Period::fromDate($maxStart, $minEnd)
         ];
     }
 }

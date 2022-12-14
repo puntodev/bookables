@@ -42,7 +42,6 @@ If you discover any security related issues, please email mariano.goldman@puntod
 ## Credits
 
 - [Mariano Goldman](https://github.com/puntodev)
-- [All Contributors](../../contributors)
 
 ## License
 
