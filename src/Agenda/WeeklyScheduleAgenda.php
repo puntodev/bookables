@@ -5,7 +5,7 @@ namespace Puntodev\Bookables\Agenda;
 use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
-use League\Period\Exception;
+use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 use Puntodev\Bookables\WeeklySchedule;
@@ -43,7 +43,7 @@ class WeeklyScheduleAgenda implements Agenda
                 $periodStart = $startOfDateFrom->max($carbon->clone()->setTimeFromTimeString($range['start']));
                 $periodEnd = $endOfDateTo->min($carbon->clone()->setTimeFromTimeString($range['end']));
                 if ($periodEnd->isAfter($periodStart)) {
-                    $ret[] = new Period($periodStart, $periodEnd);
+                    $ret[] = Period::fromDate($periodStart, $periodEnd);
                 }
             }
         }

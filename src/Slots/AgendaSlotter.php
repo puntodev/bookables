@@ -34,9 +34,9 @@ class AgendaSlotter implements TimeSlotter
         /** @var Period $range */
         foreach ($ranges as $range) {
             $dateRange = new CarbonPeriod(
-                Carbon::instance($range->getStartDate()),
+                Carbon::instance($range->startDate),
                 new CarbonInterval("PT{$interval}M"),
-                Carbon::instance($range->getEndDate())->subMinutes($this->duration),
+                Carbon::instance($range->endDate)->subMinutes($this->duration),
             );
 
             foreach ($dateRange as $slot) {
