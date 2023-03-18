@@ -39,7 +39,7 @@ class AgendaSlotterTest extends TestCase
         $this->assertRanges($expected, $result);
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             'duration 30 minutes' => [
