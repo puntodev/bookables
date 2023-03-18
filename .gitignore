@@ -4,3 +4,4 @@ coverage
 .tmp/
 .idea/
 .phpunit.result.cache
+.phpunit.cache
