@@ -3,6 +3,7 @@
 namespace Tests\Agenda;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Agenda\WeeklyScheduleAgenda;
 use Puntodev\Bookables\WeeklySchedule;
@@ -12,7 +13,8 @@ class WeeklyScheduleAgendaTest extends TestCase
 {
     use WithRangeAssertions;
 
-    public function testPossibleRanges(): void
+    #[Test]
+    public function possibleRanges(): void
     {
         $agenda = new WeeklyScheduleAgenda(WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours()));
 
@@ -46,7 +48,8 @@ class WeeklyScheduleAgendaTest extends TestCase
         ], $result);
     }
 
-    public function testPossibleRangesWithTimeZone(): void
+    #[Test]
+    public function possibleRangesWithTimeZone(): void
     {
         $agenda = new WeeklyScheduleAgenda(WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours()));
 

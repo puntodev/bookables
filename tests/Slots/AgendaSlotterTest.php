@@ -3,6 +3,8 @@
 namespace Tests\Slots;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Agenda\WeeklyScheduleAgenda;
 use Puntodev\Bookables\Contracts\Agenda;
@@ -23,10 +25,8 @@ class AgendaSlotterTest extends TestCase
         $this->agenda = new WeeklyScheduleAgenda($weeklySchedule);
     }
 
-    /**
-     * @test
-     * @dataProvider dataProvider
-     */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function checkForDurationAndStepping($duration, $timeAfter, $timeBefore, $expected): void
     {
         $slotter = new AgendaSlotter($this->agenda, $duration, $timeAfter, $timeBefore);

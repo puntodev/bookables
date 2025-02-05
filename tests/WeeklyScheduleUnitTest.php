@@ -4,6 +4,7 @@ namespace Tests;
 
 use Carbon\Carbon;
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\WeeklySchedule;
 
@@ -13,7 +14,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidJsonFails(): void
+    #[Test]
+    public function invalidJsonFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Missing hours in advance in schedule:');
@@ -24,7 +26,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidHoursInAdvanceFails(): void
+    #[Test]
+    public function invalidHoursInAdvanceFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid hours in advance in schedule: xx');
@@ -35,7 +38,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testMissingDailyFails(): void
+    #[Test]
+    public function missingDailyFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Missing daily hours in schedule:');
@@ -46,7 +50,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidDailyFails(): void
+    #[Test]
+    public function invalidDailyFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid daily hours in schedule: 23');
@@ -57,7 +62,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testAllValidKeysWork(): void
+    #[Test]
+    public function allValidKeysWork(): void
     {
         $valid_keys = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         foreach ($valid_keys as $key) {
@@ -70,7 +76,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidDailyKeysFail(): void
+    #[Test]
+    public function invalidDailyKeysFail(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid key in json representation of schedule: Any');
@@ -81,7 +88,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidValueFails(): void
+    #[Test]
+    public function invalidValueFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid value in json representation of schedule: key: Sun, value: invalid');
@@ -92,7 +100,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidEntryMissingStartFails(): void
+    #[Test]
+    public function invalidEntryMissingStartFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid value in json representation of schedule. Element doesn\'t have start time: key: Sun');
@@ -103,7 +112,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidEntryMissingEndFails(): void
+    #[Test]
+    public function invalidEntryMissingEndFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid value in json representation of schedule. Element doesn\'t have end time: key: Sun');
@@ -114,7 +124,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidEntryInvalidStartFails(): void
+    #[Test]
+    public function invalidEntryInvalidStartFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid time in json representation of schedule. Start is not a valid time: key: Sun, start value: 25:00');
@@ -125,7 +136,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidEntryInvalidEndFails(): void
+    #[Test]
+    public function invalidEntryInvalidEndFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid time in json representation of schedule. End is not a valid time: key: Sun, end value: 25:00');
@@ -136,7 +148,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testInvalidEntryStartAfterEndFails(): void
+    #[Test]
+    public function invalidEntryStartAfterEndFails(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid time range in json representation of schedule. Start time must be before end time: key: Sun, start: 14:00, end: 13:00');
@@ -147,7 +160,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testOneValidRangeWorks(): void
+    #[Test]
+    public function oneValidRangeWorks(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
@@ -164,7 +178,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testForDay(): void
+    #[Test]
+    public function forDay(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
@@ -182,7 +197,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testForDayWhenDisableAll(): void
+    #[Test]
+    public function forDayWhenDisableAll(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": true}');
 
@@ -197,7 +213,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testForDate(): void
+    #[Test]
+    public function forDate(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
@@ -210,7 +227,8 @@ class WeeklyScheduleUnitTest extends TestCase
         $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
     }
 
-    public function test_to_array(): void
+    #[Test]
+    public function toArray(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": false}');
 
@@ -226,7 +244,8 @@ class WeeklyScheduleUnitTest extends TestCase
         ], $weeklySchedule->toArray());
     }
 
-    public function test_to_json(): void
+    #[Test]
+    public function toJson(): void
     {
         $expected = '{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": false}';
         $weeklySchedule = WeeklySchedule::fromJson($expected);
@@ -238,7 +257,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testForDateDisableAll(): void
+    #[Test]
+    public function forDateDisableAll(): void
     {
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": true}');
 
@@ -253,7 +273,8 @@ class WeeklyScheduleUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testDefaultWorkingHoursParsesAsValid(): void
+    #[Test]
+    public function defaultWorkingHoursParsesAsValid(): void
     {
         WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours());
         $this->assertTrue(true);
