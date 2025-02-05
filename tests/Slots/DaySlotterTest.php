@@ -3,6 +3,8 @@
 namespace Tests\Slots;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Slots\DaySlotter;
 use Tests\Concerns\WithRangeAssertions;
@@ -11,10 +13,8 @@ class DaySlotterTest extends TestCase
 {
     use WithRangeAssertions;
 
-    /**
-     * @test
-     * @dataProvider dataProvider
-     */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function checkForDurationAndStepping($duration, $stepping, $expected): void
     {
         $slotter = new DaySlotter($duration, $stepping);

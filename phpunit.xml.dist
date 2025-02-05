@@ -1,23 +1,35 @@
-<?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" colors="true"
-         cacheDirectory=".phpunit.cache">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         shortenArraysForExportThreshold="10"
+         beStrictAboutCoverageMetadata="true"
+         beStrictAboutOutputDuringTests="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         failOnPhpunitDeprecation="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         colors="true">
+
   <testsuites>
     <testsuite name="unit">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
-  <logging>
-    <junit outputFile="./.tmp/test-results/logfile.xml"/>
-    <testdoxHtml outputFile="./.tmp/test-results/testdox.html"/>
-  </logging>
-  <coverage>
+
+  <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
     <include>
-      <directory suffix=".php">src</directory>
+      <directory>src</directory>
     </include>
+  </source>
+
+  <coverage>
     <report>
       <html outputDirectory="./.tmp/test-results/coverage" lowUpperBound="35" highLowerBound="70"/>
       <php outputFile="./.tmp/test-results/coverage.serialized"/>
     </report>
   </coverage>
+
 </phpunit>
