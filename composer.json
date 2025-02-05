@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-json": "*",
         "league/period": "^5.3",
         "nesbot/carbon": "^3.8"
