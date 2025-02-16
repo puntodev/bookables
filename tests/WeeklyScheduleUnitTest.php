@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Exception;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -219,7 +219,7 @@ class WeeklyScheduleUnitTest extends TestCase
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24}');
 
         $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
-        $forSunday = $weeklySchedule->forDate(Carbon::parse('2020-06-14'));
+        $forSunday = $weeklySchedule->forDate(CarbonImmutable::parse('2020-06-14'));
         $this->assertArrayHasKey('start', $forSunday[0]);
         $this->assertArrayHasKey('end', $forSunday[0]);
         $this->assertEquals('14:00', $forSunday[0]['start']);
@@ -263,7 +263,7 @@ class WeeklyScheduleUnitTest extends TestCase
         $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00", "end": "15:00"}]}, "hours_in_advance": 24, "disable_all": true}');
 
         $this->assertArrayHasKey('Sun', $weeklySchedule->daily());
-        $forSunday = $weeklySchedule->forDate(Carbon::parse('2020-06-14'));
+        $forSunday = $weeklySchedule->forDate(CarbonImmutable::parse('2020-06-14'));
         $this->assertCount(0, $forSunday);
         $this->assertEquals(24, $weeklySchedule->hoursInAdvance());
         $this->assertTrue($weeklySchedule->disableAll());

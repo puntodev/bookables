@@ -2,7 +2,7 @@
 
 namespace Tests\Agenda;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Agenda\WeeklyScheduleAgenda;
@@ -19,8 +19,8 @@ class WeeklyScheduleAgendaTest extends TestCase
         $agenda = new WeeklyScheduleAgenda(WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours()));
 
         $result = $agenda->possibleRanges(
-            Carbon::parse("2020-01-19"),
-            Carbon::parse("2020-01-31"),
+            CarbonImmutable::parse("2020-01-19"),
+            CarbonImmutable::parse("2020-01-31"),
         );
 
         $this->assertRanges([
@@ -55,8 +55,8 @@ class WeeklyScheduleAgendaTest extends TestCase
 
         $tz = "Pacific/Auckland";
         $result = $agenda->possibleRanges(
-            Carbon::parse("2020-01-19", $tz),
-            Carbon::parse("2020-01-31", $tz),
+            CarbonImmutable::parse("2020-01-19", $tz),
+            CarbonImmutable::parse("2020-01-31", $tz),
         );
 
         $this->assertRanges([

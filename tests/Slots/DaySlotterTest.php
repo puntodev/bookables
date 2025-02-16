@@ -2,7 +2,7 @@
 
 namespace Tests\Slots;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -20,8 +20,8 @@ class DaySlotterTest extends TestCase
         $slotter = new DaySlotter($duration, $stepping);
 
         $result = $slotter->makeSlotsForDates(
-            Carbon::parse('2020-01-23'),
-            Carbon::parse('2020-01-23'),
+            CarbonImmutable::parse('2020-01-23'),
+            CarbonImmutable::parse('2020-01-23'),
         );
 
         $this->assertRanges($expected, $result);

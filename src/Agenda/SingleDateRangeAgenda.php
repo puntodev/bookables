@@ -4,39 +4,39 @@
 namespace Puntodev\Bookables\Agenda;
 
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
 
 class SingleDateRangeAgenda implements Agenda
 {
-    private Carbon $start;
+    private CarbonInterface $start;
 
-    private Carbon $end;
+    private CarbonInterface $end;
 
     /**
      * SingleDateRangeAgenda constructor.
      *
-     * @param Carbon $start
-     * @param Carbon $end
+     * @param CarbonInterface $start
+     * @param CarbonInterface $end
      */
-    public function __construct(Carbon $start, Carbon $end)
+    public function __construct(CarbonInterface $start, CarbonInterface $end)
     {
-        $this->start = $start->clone();
-        $this->end = $end->clone();
+        $this->start = $start->toImmutable();
+        $this->end = $end->toImmutable();
     }
 
     /**
-     * @param Carbon $from
-     * @param Carbon $to
+     * @param CarbonInterface $from
+     * @param CarbonInterface $to
      * @return array|Period[]
      * @throws Exception
      */
-    public function possibleRanges(Carbon $from, Carbon $to): array
+    public function possibleRanges(CarbonInterface $from, CarbonInterface $to): array
     {
-        $maxStart = $from->max($this->start);
-        $minEnd = $to->min($this->end);
+        $maxStart = $from->toImmutable()->max($this->start);
+        $minEnd = $to->toImmutable()->min($this->end);
         if ($maxStart->isAfter($minEnd)) {
             return [];
         }

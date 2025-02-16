@@ -2,9 +2,10 @@
 
 namespace Puntodev\Bookables\Agenda;
 
-use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
+use Carbon\CarbonInterval;
+use Carbon\CarbonPeriodImmutable;
 use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
@@ -20,28 +21,28 @@ class WeeklyScheduleAgenda implements Agenda
     }
 
     /**
-     * @param Carbon $from
-     * @param Carbon $to
+     * @param CarbonInterface $from
+     * @param CarbonInterface $to
      * @return array
      * @throws Exception
      */
-    public function possibleRanges(Carbon $from, Carbon $to): array
+    public function possibleRanges(CarbonInterface $from, CarbonInterface $to): array
     {
-        $startOfDateFrom = $from->clone()->startOfDay();
-        $endOfDateTo = $to->clone()->endOfDay();
+        $startOfDateFrom = $from->toImmutable()->startOfDay();
+        $endOfDateTo = $to->toImmutable()->endOfDay();
 
-        $period = new DatePeriod(
+        $period = new CarbonPeriodImmutable(
             $startOfDateFrom,
-            new DateInterval('P1D'),
+            new CarbonInterval('P1D'),
             $endOfDateTo,
         );
 
         $ret = [];
         foreach ($period as $date) {
-            $carbon = Carbon::instance($date);
+            $carbon = CarbonImmutable::instance($date);
             foreach ($this->weeklySchedule->forDate($carbon) as $range) {
-                $periodStart = $startOfDateFrom->max($carbon->clone()->setTimeFromTimeString($range['start']));
-                $periodEnd = $endOfDateTo->min($carbon->clone()->setTimeFromTimeString($range['end']));
+                $periodStart = $startOfDateFrom->max($carbon->setTimeFromTimeString($range['start']));
+                $periodEnd = $endOfDateTo->min($carbon->setTimeFromTimeString($range['end']));
                 if ($periodEnd->isAfter($periodStart)) {
                     $ret[] = Period::fromDate($periodStart, $periodEnd);
                 }
