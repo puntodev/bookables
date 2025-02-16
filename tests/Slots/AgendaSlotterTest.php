@@ -2,7 +2,7 @@
 
 namespace Tests\Slots;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -32,8 +32,8 @@ class AgendaSlotterTest extends TestCase
         $slotter = new AgendaSlotter($this->agenda, $duration, $timeAfter, $timeBefore);
 
         $result = $slotter->makeSlotsForDates(
-            Carbon::parse('2020-01-23'),
-            Carbon::parse('2020-01-25'),
+            CarbonImmutable::parse('2020-01-23'),
+            CarbonImmutable::parse('2020-01-25'),
         );
 
         $this->assertRanges($expected, $result);

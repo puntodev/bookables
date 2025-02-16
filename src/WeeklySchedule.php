@@ -2,7 +2,7 @@
 
 namespace Puntodev\Bookables;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use DateTime;
 use Exception;
 
@@ -115,7 +115,7 @@ class WeeklySchedule
         }
     }
 
-    public function forDate(Carbon $date): array
+    public function forDate(CarbonInterface $date): array
     {
         return $this->forDay(self::$dowMap[$date->dayOfWeek]);
     }

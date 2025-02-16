@@ -4,9 +4,9 @@
 namespace Puntodev\Bookables\Contracts;
 
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 interface Agenda
 {
-    public function possibleRanges(Carbon $from, Carbon $to): array;
+    public function possibleRanges(CarbonInterface $from, CarbonInterface $to): array;
 }
