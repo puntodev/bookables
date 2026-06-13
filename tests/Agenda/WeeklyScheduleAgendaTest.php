@@ -6,12 +6,25 @@ use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Agenda\WeeklyScheduleAgenda;
+use Puntodev\Bookables\Exceptions\DateRangeTooLargeException;
 use Puntodev\Bookables\WeeklySchedule;
 use Tests\Concerns\WithRangeAssertions;
 
 class WeeklyScheduleAgendaTest extends TestCase
 {
     use WithRangeAssertions;
+
+    #[Test]
+    public function rangeLargerThanMaxDaysIsRejected(): void
+    {
+        $agenda = new WeeklyScheduleAgenda(WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours()), 2);
+
+        $this->expectException(DateRangeTooLargeException::class);
+        $agenda->possibleRanges(
+            CarbonImmutable::parse('2020-01-01'),
+            CarbonImmutable::parse('2020-12-31'),
+        );
+    }
 
     #[Test]
     public function possibleRanges(): void

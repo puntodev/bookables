@@ -9,15 +9,23 @@ use Carbon\CarbonPeriodImmutable;
 use Exception;
 use League\Period\Period;
 use Puntodev\Bookables\Contracts\Agenda;
+use Puntodev\Bookables\Support\DateRangeGuard;
 use Puntodev\Bookables\WeeklySchedule;
 
 class WeeklyScheduleAgenda implements Agenda
 {
     private WeeklySchedule $weeklySchedule;
 
-    public function __construct(WeeklySchedule $weeklySchedule)
+    private int $maxDays;
+
+    /**
+     * $maxDays caps the size of the requested range to avoid unbounded range
+     * generation; a value of 0 or less disables the limit.
+     */
+    public function __construct(WeeklySchedule $weeklySchedule, int $maxDays = 366)
     {
         $this->weeklySchedule = $weeklySchedule;
+        $this->maxDays = $maxDays;
     }
 
     /**
@@ -28,6 +36,8 @@ class WeeklyScheduleAgenda implements Agenda
      */
     public function possibleRanges(CarbonInterface $from, CarbonInterface $to): array
     {
+        DateRangeGuard::ensureWithinLimit($from, $to, $this->maxDays);
+
         $startOfDateFrom = $from->toImmutable()->startOfDay();
         $endOfDateTo = $to->toImmutable()->endOfDay();
 
