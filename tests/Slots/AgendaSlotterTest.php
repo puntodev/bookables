@@ -3,11 +3,13 @@
 namespace Tests\Slots;
 
 use Carbon\CarbonImmutable;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Puntodev\Bookables\Agenda\WeeklyScheduleAgenda;
 use Puntodev\Bookables\Contracts\Agenda;
+use Puntodev\Bookables\Exceptions\DateRangeTooLargeException;
 use Puntodev\Bookables\Slots\AgendaSlotter;
 use Puntodev\Bookables\WeeklySchedule;
 use Tests\Concerns\WithRangeAssertions;
@@ -23,6 +25,39 @@ class AgendaSlotterTest extends TestCase
         parent::setUp();
         $weeklySchedule = WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours());
         $this->agenda = new WeeklyScheduleAgenda($weeklySchedule);
+    }
+
+    #[Test]
+    public function zeroDurationIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new AgendaSlotter($this->agenda, 0);
+    }
+
+    #[Test]
+    public function negativeTimeAfterIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new AgendaSlotter($this->agenda, 30, -1);
+    }
+
+    #[Test]
+    public function negativeTimeBeforeIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new AgendaSlotter($this->agenda, 30, 0, -1);
+    }
+
+    #[Test]
+    public function rangeLargerThanMaxDaysIsRejected(): void
+    {
+        $slotter = new AgendaSlotter($this->agenda, 30, 0, 0, 2);
+
+        $this->expectException(DateRangeTooLargeException::class);
+        $slotter->makeSlotsForDates(
+            CarbonImmutable::parse('2020-01-01'),
+            CarbonImmutable::parse('2020-12-31'),
+        );
     }
 
     #[Test]

@@ -63,6 +63,68 @@ class WeeklyScheduleUnitTest extends TestCase
      * @throws Exception
      */
     #[Test]
+    public function malformedJsonFails(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid JSON in schedule');
+        WeeklySchedule::fromJson('this is not json');
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    #[Test]
+    public function nonObjectJsonFails(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid JSON in schedule');
+        WeeklySchedule::fromJson('123');
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    #[Test]
+    public function relativeTimeStringAsStartFails(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Start is not a valid time: key: Sun, start value: now');
+        WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "now", "end": "23:00"}]}, "hours_in_advance": 24}');
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    #[Test]
+    public function outOfRangeMinutesAsEndFails(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('End is not a valid time: key: Sun, end value: 14:60');
+        WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "13:00", "end": "14:60"}]}, "hours_in_advance": 24}');
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    #[Test]
+    public function timeWithSecondsIsValid(): void
+    {
+        $weeklySchedule = WeeklySchedule::fromJson('{"daily": {"Sun":[{"start": "14:00:30", "end": "15:00:00"}]}, "hours_in_advance": 24}');
+
+        $forSunday = $weeklySchedule->forDay('Sun');
+        $this->assertEquals('14:00:30', $forSunday[0]['start']);
+        $this->assertEquals('15:00:00', $forSunday[0]['end']);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    #[Test]
     public function allValidKeysWork(): void
     {
         $valid_keys = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

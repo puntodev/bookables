@@ -3,15 +3,56 @@
 namespace Tests\Slots;
 
 use Carbon\CarbonImmutable;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Puntodev\Bookables\Exceptions\DateRangeTooLargeException;
 use Puntodev\Bookables\Slots\DaySlotter;
 use Tests\Concerns\WithRangeAssertions;
 
 class DaySlotterTest extends TestCase
 {
     use WithRangeAssertions;
+
+    #[Test]
+    public function zeroDurationIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new DaySlotter(0, 15);
+    }
+
+    #[Test]
+    public function zeroStepIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new DaySlotter(30, 0);
+    }
+
+    #[Test]
+    public function rangeLargerThanMaxDaysIsRejected(): void
+    {
+        $slotter = new DaySlotter(30, 15, 2);
+
+        $this->expectException(DateRangeTooLargeException::class);
+        $slotter->makeSlotsForDates(
+            CarbonImmutable::parse('2020-01-01'),
+            CarbonImmutable::parse('2020-12-31'),
+        );
+    }
+
+    #[Test]
+    public function largeRangeIsAllowedWhenLimitIsDisabled(): void
+    {
+        $slotter = new DaySlotter(720, 720, 0);
+
+        $result = $slotter->makeSlotsForDates(
+            CarbonImmutable::parse('2020-01-01'),
+            CarbonImmutable::parse('2021-12-31'),
+        );
+
+        $this->assertNotEmpty($result);
+    }
 
     #[Test]
     #[DataProvider('dataProvider')]

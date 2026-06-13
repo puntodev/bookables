@@ -98,21 +98,30 @@ class WeeklySchedule
                 if (!array_key_exists('end', $item)) {
                     throw new Exception("Invalid value in json representation of schedule. Element doesn't have end time: key: " . $k);
                 }
-                try {
-                    $start = new DateTime($item['start']);
-                } catch (Exception $e) {
+                if (!self::isValidTimeOfDay($item['start'])) {
                     throw new Exception("Invalid time in json representation of schedule. Start is not a valid time: key: " . $k . ", start value: " . $item['start']);
                 }
-                try {
-                    $end = new DateTime($item['end']);
-                } catch (Exception $e) {
+                if (!self::isValidTimeOfDay($item['end'])) {
                     throw new Exception("Invalid time in json representation of schedule. End is not a valid time: key: " . $k . ", end value: " . $item['end']);
                 }
+                $start = new DateTime($item['start']);
+                $end = new DateTime($item['end']);
                 if ($start > $end) {
                     throw new Exception("Invalid time range in json representation of schedule. Start time must be before end time: key: " . $k . ", start: " . $item['start'] . ', end: ' . $item['end']);
                 }
             }
         }
+    }
+
+    /**
+     * Accepts only a time of day in HH:mm or HH:mm:ss format (00:00:00 to
+     * 23:59:59). Rejects relative expressions such as "now" or "+1 day" and
+     * out-of-range values such as "25:00" or "14:60".
+     */
+    private static function isValidTimeOfDay(mixed $time): bool
+    {
+        return is_string($time)
+            && preg_match('/^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/', $time) === 1;
     }
 
     public function forDate(CarbonInterface $date): array
@@ -153,6 +162,9 @@ class WeeklySchedule
     public static function fromJson(string $json): WeeklySchedule
     {
         $json_decoded = json_decode($json, true);
+        if (!is_array($json_decoded)) {
+            throw new Exception("Invalid JSON in schedule: " . $json);
+        }
         self::validate($json_decoded);
 
         return self::fromArray($json_decoded);

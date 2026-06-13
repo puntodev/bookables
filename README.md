@@ -101,7 +101,7 @@ $schedule = WeeklySchedule::fromArray(WeeklySchedule::defaultWorkingHours());
 
 | Key | Type | Description |
 | --- | --- | --- |
-| `daily` | object | Map of day-of-week (`Sun`, `Mon`, `Tue`, `Wed`, `Thu`, `Fri`, `Sat`) to a list of `{ "start": "HH:MM", "end": "HH:MM" }` ranges. `start` must be before `end`. |
+| `daily` | object | Map of day-of-week (`Sun`, `Mon`, `Tue`, `Wed`, `Thu`, `Fri`, `Sat`) to a list of `{ "start": "HH:MM", "end": "HH:MM" }` ranges. Times must be a zero-padded time of day (`HH:MM` or `HH:MM:SS`, `00:00`–`23:59`); relative expressions like `now` are rejected. `start` must be before `end`. |
 | `hours_in_advance` | int | Minimum booking notice, in hours. **Metadata only** — stored and exposed via `hoursInAdvance()`, but not enforced by the slotters (see notes below). |
 | `disable_all` | bool | When `true`, the schedule yields no availability regardless of `daily`. Optional, defaults to `false`. |
 
@@ -242,6 +242,29 @@ class Professional implements HasAgenda
   yields no ranges.
 - Ranges and slots are immutable `League\Period\Period` objects; all internal date
   math uses Carbon's immutable variants.
+- **Requested date ranges are capped.** `WeeklyScheduleAgenda`, `AgendaSlotter` and
+  `DaySlotter` generate one entry per day (and per slot) in the `[from, to]` window,
+  so an unbounded range would exhaust memory. Each takes an optional `maxDays`
+  argument (default `366`) and throws
+  `Puntodev\Bookables\Exceptions\DateRangeTooLargeException` when the window is
+  larger. Pass `0` (or less) to disable the limit if you have your own bound:
+
+  ```php
+  use Puntodev\Bookables\Exceptions\DateRangeTooLargeException;
+
+  $agenda  = new WeeklyScheduleAgenda($schedule, maxDays: 92);
+  $slotter = new AgendaSlotter($agenda, duration: 30, maxDays: 92);
+  $slotter = new DaySlotter(duration: 30, step: 15, maxDays: 92);
+
+  try {
+      $slots = $slotter->makeSlotsForDates($from, $to);
+  } catch (DateRangeTooLargeException $e) {
+      // reject the request (e.g. HTTP 422)
+  }
+  ```
+- **Slot durations must be positive.** `AgendaSlotter` (`duration`) and `DaySlotter`
+  (`duration`, `step`) reject non-positive values with `InvalidArgumentException`;
+  `timeAfter`/`timeBefore` must not be negative.
 
 ## Testing
 
