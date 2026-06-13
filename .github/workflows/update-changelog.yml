@@ -18,6 +18,10 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: master
+          # Admin PAT so the changelog commit can be pushed to the protected
+          # master branch (the default GITHUB_TOKEN is rejected by branch
+          # protection). Requires enforce_admins to be disabled on master.
+          token: ${{ secrets.RELEASE_TOKEN }}
           persist-credentials: true
 
       - name: Update CHANGELOG

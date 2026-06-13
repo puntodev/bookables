@@ -11,6 +11,28 @@ range of changes on `master` that have not been released yet.
 
 ## [Unreleased]
 
+## v5.0.0 - 2026-06-13
+
+### 🛡️ Security
+
+- Harden scheduling against unbounded ranges and invalid input (#27).
+  **BREAKING:** date ranges are now capped (default 366 days, `DateRangeTooLargeException`)
+  and schedule times must be a strict time of day (`HH:MM`/`HH:MM:SS`); previously
+  accepted values such as non-padded hours (`8:00`) or relative strings (`now`) are
+  rejected.
+
+### 🧰 Maintenance & Dependencies
+
+- Support Laravel 13, drop Laravel 12, and update dependencies (#25).
+
+### 📚 Documentation
+
+- Add a README usage guide and `AGENTS.md` (#26).
+
+### Other Changes
+
+- Automate changelog updates from GitHub releases (#28).
+
 ## v4.1.2 - 2026-03-07
 
 - Update dependencies (#24).
@@ -94,4 +116,4 @@ range of changes on `master` that have not been released yet.
 
 - Initial release.
 
-[Unreleased]: https://github.com/puntodev/bookables/compare/v4.1.2...HEAD
+[Unreleased]: https://github.com/puntodev/bookables/compare/v5.0.0...HEAD
