@@ -9,7 +9,19 @@ Released entries below are maintained automatically from the GitHub release note
 (see `.github/workflows/update-changelog.yml`); the `Unreleased` section tracks the
 range of changes on `master` that have not been released yet.
 
-## [Unreleased]
+## [Unreleased](https://github.com/puntodev/bookables/compare/v5.0.1...HEAD)
+
+## [v5.0.1](https://github.com/puntodev/bookables/compare/v5.0.0...v5.0.1) - 2026-06-29
+
+<!-- Release notes generated using configuration in .github/release.yml at master -->
+### What's Changed
+
+#### Other Changes
+
+* Backfill v5.0.0 changelog and enable PAT-based sync by @marianogoldman in https://github.com/puntodev/bookables/pull/29
+* chore(deps): update dependencies to latest within constraints by @marianogoldman in https://github.com/puntodev/bookables/pull/30
+
+**Full Changelog**: https://github.com/puntodev/bookables/compare/v5.0.0...v5.0.1
 
 ## v5.0.0 - 2026-06-13
 
@@ -115,5 +127,3 @@ range of changes on `master` that have not been released yet.
 ## v0.0.1 - 2020-09-01
 
 - Initial release.
-
-[Unreleased]: https://github.com/puntodev/bookables/compare/v5.0.0...HEAD
