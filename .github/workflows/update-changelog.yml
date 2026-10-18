@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout master
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: master
           # Admin PAT so the changelog commit can be pushed to the protected
