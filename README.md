@@ -18,7 +18,7 @@ for date/time math and [`league/period`](https://period.thephpleague.com/) for t
 
 ## Requirements
 
-- PHP `>=8.4 <9.0`
+- PHP `^8.5`
 - `ext-json`
 
 ## Installation
