@@ -14,7 +14,7 @@ is meant to be embedded inside a larger booking/scheduling application.
 
 ## Tech stack
 
-- **PHP** `>=8.4 <9.0`, `ext-json`.
+- **PHP** `^8.5`, `ext-json`.
 - **Runtime dependencies**
   - [`nesbot/carbon`](https://carbon.nesbot.com/) `^3.11` — date/time handling.
   - [`league/period`](https://period.thephpleague.com/) `^5.3` — the `Period`
@@ -115,7 +115,7 @@ and coverage metadata is enforced. Tests use PHPUnit attributes (`#[Test]`,
 ## Quality gates / CI
 
 - **GitHub Actions** (`.github/workflows/php.yml`) runs on push/PR to `master`
-  across PHP **8.4** and **8.5**: `composer validate` then `composer test`.
+  on PHP **8.5**: `composer validate` then `composer test`.
 - **Code style**: PSR-12 (`.styleci.yml` preset `psr12`). `.editorconfig`
   enforces 4-space indent, LF line endings, UTF-8, trailing-whitespace trim, and
   a final newline.
