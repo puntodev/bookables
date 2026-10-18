@@ -9,7 +9,31 @@ Released entries below are maintained automatically from the GitHub release note
 (see `.github/workflows/update-changelog.yml`); the `Unreleased` section tracks the
 range of changes on `master` that have not been released yet.
 
-## [Unreleased](https://github.com/puntodev/bookables/compare/v5.0.1...HEAD)
+## [Unreleased](https://github.com/puntodev/bookables/compare/v6.0.0...HEAD)
+
+## [v6.0.0](https://github.com/puntodev/bookables/compare/v5.0.1...v6.0.0) - 2026-10-18
+
+### ⚠️ Breaking change
+
+Requires PHP 8.5 or later. PHP 8.4 is no longer supported. Projects on PHP 8.4 stay on the previous major version.
+
+<!-- Release notes generated using configuration in .github/release.yml at master -->
+### What's Changed
+
+#### 🧰 Maintenance & Dependencies
+
+* chore(deps): Bump the "weekly" group with 1 update across multiple ecosystems by @dependabot[bot] in https://github.com/puntodev/bookables/pull/32
+
+#### Other Changes
+
+* chore(deps): un solo PR semanal de Dependabot sin majors by @marianogoldman in https://github.com/puntodev/bookables/pull/31
+* chore: require PHP 8.5 by @marianogoldman in https://github.com/puntodev/bookables/pull/33
+
+### New Contributors
+
+* @dependabot[bot] made their first contribution in https://github.com/puntodev/bookables/pull/32
+
+**Full Changelog**: https://github.com/puntodev/bookables/compare/v5.0.1...v6.0.0
 
 ## [v5.0.1](https://github.com/puntodev/bookables/compare/v5.0.0...v5.0.1) - 2026-06-29
 
